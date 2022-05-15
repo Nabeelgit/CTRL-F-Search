@@ -40,10 +40,10 @@
 			let index = 0;
 			for(let i = 0; i < string.length; i++){
 				if(string[i] == word[index]){
-					charArray.push("<b>"+word[index]+"</b>");
+					charArray.push("<mark>"+word[index]+"</mark>");
 					index++
 				} else if(string[i] == word[0]){
-					charArray.push("<b>"+word[0]+"</b>");
+					charArray.push("<mark>"+word[0]+"</mark>");
 					index = 0;
 				}
 				else {
