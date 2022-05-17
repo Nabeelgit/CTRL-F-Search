@@ -19,39 +19,61 @@
 		}
 		return str;
 	}
-		function removeUndefined(arr){
-		let newArr = arr;
-		for(let i = 0; i < arr.length; i++){
-			if(arr[i] == undefined){
-				newArr.push(newArr.splice(i, 1)[0]);
-				newArr.pop();
-			}	
-		}
-		return newArr;
+	
+	function strToArr(str){
+	let arr = [];
+	for(let i = 0; i < str.length; i++){
+	arr.push(str[i]);
 	}
+	return arr;
+	}
+	
+	function htmlRemove(str) {
+    if (str == '') {
+		return false;
+	}
+    else {
+    str = str.toString();
+    return str.replace( /(<([^>]+)>)/ig, '');
+ }
+}
+
         $("#string").on("input", function(){
-            $("#output").html($("#string").val());
+            $("#output").html(htmlRemove($("#string").val()));
         })
         $("#word").on("input", function(){
             let word = $("#word").val();
 			let string = $("#string").val();
+			let strArr = strToArr(string);
 			let output = $("#output");
 			let charArray = [];
 			let index = 0;
-			for(let i = 0; i < string.length; i++){
-				if(string[i] == word[index]){
-					charArray.push("<mark>"+word[index]+"</mark>");
+			for(let i = 0; i < strArr.length; i++){
+				if(string[i] == word[index])	{
+					if(word.length > 1){
+					if(word[index + 1] == string[i + 1]){
+					strArr[i] = "<mark>" + word[index] + "</mark>";
+					let newI = i;
+					newI++;
+					strArr[newI] = "<mark>" + word[index + 1] + "</mark>";
+					i++;
+					} else {
+					strArr[i] = "<span>" + string[i] + "</span>";
+					}
+					} else {
+					strArr[i] = "<mark>" + word[index] + "</mark>";
+					}
 					index++
-				} else if(string[i] == word[0]){
-					charArray.push("<mark>"+word[0]+"</mark>");
+				}else if(string[i] == word[0]){
+					strArr[i] = "<mark>" + word[0] + "</mark>";
 					index = 0;
 				}
 				else {
-					charArray.push("<span>"+string[i]+"</span>");
+					strArr[i] = "<span>" + string[i] + "</span>";
 					index = 0;
 				}
 			}
-			let str = arrToStr(removeUndefined(charArray));
+			let str = arrToStr(strArr);
 			output.html(str);
      })
     </script>
