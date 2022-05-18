@@ -6,11 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word search</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
     <input type="text" placeholder="string" id="string">
     <input type="text" placeholder="word in string" id="word">
+	<button id="replace">Replace</button>
     <p id='output'></p>
+	<div id="dialog" style="display: none;" title="Word to replace with">
+	<input placeholder="Replacement" id="replacement">
+	<br>
+	<button id="confirm">Replace</button>
+	</div>
     <script>
 	function arrToStr(arr){
 		let str = '';
@@ -48,11 +56,9 @@
 			if(string.indexOf(word) == -1){
 				output.html(string)
 			} else {
-			let strArr = strToArr(string);
 			let nextWords = '';
 			let index = 0;
 			let strSplit = string.split(word)
-			let newWordlen = -20 + word.length;
 			let newWord, strWord;
 			if(strSplit[0] != string){
 				for(let i = 0; i < strSplit.length; i++){
@@ -67,6 +73,46 @@
 			output.html(str);
 		}
      })
+	 $("#replace").click(function(){
+		 let string = $("#string").val();
+		 let word = $("#word").val();
+		 let output = $("#output");
+		 let html = document.getElementById("output").textContent;
+		 if(word.trim() == ""){
+			 output.html("Word cannot be blank!");
+		 } else if(string.trim() == ""){
+			output.html("String cannot be blank!");
+		 } else {
+			$("#dialog").dialog({
+				draggable: false,
+				resizable: false,
+				modal: true
+			});
+			$("#confirm").click(function(){
+				let replacement = $("#replacement").val();
+				let htmlSplit = html.split($("#word").val());
+				let nextWords = '';
+				let replace, doneHTML, noreplace;
+				if(htmlSplit[0] == html){
+					output.html("No matching words to replace with!");
+					$("#dialog").dialog("close");
+				} else {
+					for(let i = 0; i < htmlSplit.length; i++){
+						noreplace = "<span>" + htmlSplit[i] + "</span>";
+						replace = "<mark>" + replacement + "</mark>";
+						doneHTML = noreplace + replace;
+						nextWords += doneHTML;
+					}
+					nextWords = nextWords.slice(0, -replace.length);
+					output.html(nextWords);
+					$("#string").val(document.getElementById("output").textContent);
+					$("#word").val("");
+					$("#replacement").val("");
+					$("#dialog").dialog("close");
+				}
+			})
+		 }
+	 })
     </script>
 </body>
 </html>
