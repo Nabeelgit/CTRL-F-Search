@@ -44,37 +44,28 @@
         $("#word").on("input", function(){
             let word = $("#word").val();
 			let string = $("#string").val();
-			let strArr = strToArr(string);
 			let output = $("#output");
-			let charArray = [];
+			if(string.indexOf(word) == -1){
+				output.html(string)
+			} else {
+			let strArr = strToArr(string);
+			let nextWords = '';
 			let index = 0;
-			for(let i = 0; i < strArr.length; i++){
-				if(string[i] == word[index])	{
-					if(word.length > 1){
-					if(word[index + 1] == string[i + 1]){
-					strArr[i] = "<mark>" + word[index] + "</mark>";
-					let newI = i;
-					newI++;
-					strArr[newI] = "<mark>" + word[index + 1] + "</mark>";
-					i++;
-					} else {
-					strArr[i] = "<span>" + string[i] + "</span>";
-					}
-					} else {
-					strArr[i] = "<mark>" + word[index] + "</mark>";
-					}
-					index++
-				}else if(string[i] == word[0]){
-					strArr[i] = "<mark>" + word[0] + "</mark>";
-					index = 0;
+			let strSplit = string.split(word)
+			let newWordlen = -20 + word.length;
+			let newWord, strWord;
+			if(strSplit[0] != string){
+				for(let i = 0; i < strSplit.length; i++){
+					strWord = "<span>" + strSplit[i] + "</span>";
+					newWord = "<mark>" + word + "</mark>";
+					let completeHTML = strWord + newWord;
+					nextWords += completeHTML;
 				}
-				else {
-					strArr[i] = "<span>" + string[i] + "</span>";
-					index = 0;
-				}
+				nextWords = nextWords.slice(0, -newWord.length);
 			}
-			let str = arrToStr(strArr);
+			let str = nextWords;
 			output.html(str);
+		}
      })
     </script>
 </body>
