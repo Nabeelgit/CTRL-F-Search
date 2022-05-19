@@ -20,6 +20,7 @@
 	<button id="confirm">Replace</button>
 	</div>
     <script>
+	
 	function arrToStr(arr){
 		let str = '';
 		for(let i = 0; i < arr.length; i++){
@@ -27,15 +28,7 @@
 		}
 		return str;
 	}
-	
-	function strToArr(str){
-	let arr = [];
-	for(let i = 0; i < str.length; i++){
-	arr.push(str[i]);
-	}
-	return arr;
-	}
-	
+
 	function htmlRemove(str) {
     if (str == '') {
 		return false;
@@ -43,24 +36,24 @@
     else {
     str = str.toString();
     return str.replace( /(<([^>]+)>)/ig, '');
- }
+ 	}
 }
 
-        $("#string").on("input", function(){
+    $("#string").on("input", function(){
             $("#output").html(htmlRemove($("#string").val()));
         })
+
         $("#word").on("input", function(){
-            let word = $("#word").val();
+			let word = $("#word").val()
 			let string = $("#string").val();
 			let output = $("#output");
 			if(string.indexOf(word) == -1){
 				output.html(string)
 			} else {
 			let nextWords = '';
-			let index = 0;
 			let strSplit = string.split(word)
 			let newWord, strWord;
-			if(strSplit[0] != string){
+			if(arrToStr(strSplit) != string){
 				for(let i = 0; i < strSplit.length; i++){
 					strWord = "<span>" + strSplit[i] + "</span>";
 					newWord = "<mark>" + word + "</mark>";
@@ -69,16 +62,18 @@
 				}
 				nextWords = nextWords.slice(0, -newWord.length);
 			}
-			let str = nextWords;
-			output.html(str);
+			output.html(nextWords);
 		}
-     })
+     	})
 	 $("#replace").click(function(){
+	 	$('#replacement').val("");
 		 let string = $("#string").val();
 		 let word = $("#word").val();
 		 let output = $("#output");
-		 let html = document.getElementById("output").textContent;
-		 if(word.trim() == ""){
+		 if(word.trim() == "" && string.trim() == ""){
+			output.html("Both inputs cannot be blank!")
+		 }
+		 else if(word.trim() == ""){
 			 output.html("Word cannot be blank!");
 		 } else if(string.trim() == ""){
 			output.html("String cannot be blank!");
@@ -90,29 +85,13 @@
 			});
 			$("#confirm").click(function(){
 				let replacement = $("#replacement").val();
-				let htmlSplit = html.split($("#word").val());
-				let nextWords = '';
-				let replace, doneHTML, noreplace;
-				if(htmlSplit[0] == html){
-					output.html("No matching words to replace with!");
-					$("#dialog").dialog("close");
-				} else {
-					for(let i = 0; i < htmlSplit.length; i++){
-						noreplace = "<span>" + htmlSplit[i] + "</span>";
-						replace = "<mark>" + replacement + "</mark>";
-						doneHTML = noreplace + replace;
-						nextWords += doneHTML;
-					}
-					nextWords = nextWords.slice(0, -replace.length);
-					output.html(nextWords);
-					$("#string").val(document.getElementById("output").textContent);
-					$("#word").val(replacement);
-					$("#replacement").val("");
-					$("#dialog").dialog("close");
-				}
-			})
-		 }
-	 })
+				$('mark').text(replacement)
+				$("#string").val(output.text());
+				$("#word").val(replacement)
+				$("#dialog").dialog("close")
+		})
+	}
+})
     </script>
 </body>
 </html>
