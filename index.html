@@ -39,11 +39,7 @@
  	}
 }
 
-    $("#string").on("input", function(){
-            $("#output").html(htmlRemove($("#string").val()));
-        })
-
-        $("#word").on("input", function(){
+function stringSearch(){
 			let word = $("#word").val()
 			let string = $("#string").val();
 			let output = $("#output");
@@ -64,6 +60,17 @@
 			}
 			output.html(nextWords);
 		}
+}
+
+    $("#string").on("input", function(){
+            $("#output").html(htmlRemove($("#string").val()));
+            if($("#word").val().trim() != ""){
+            	stringSearch();
+            }
+        })
+
+        $("#word").on("input", function(){
+        	stringSearch();
      	})
 	 $("#replace").click(function(){
 	 	$('#replacement').val("");
