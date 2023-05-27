@@ -176,8 +176,10 @@ function stringSearch(){
 					nextWords += completeHTML;
 				}
 				nextWords = nextWords.slice(0, -newWord.length);
+				output.html(nextWords);
+			} else {
+				output.html(string);
 			}
-			output.html(nextWords);
 		}
 }
 
